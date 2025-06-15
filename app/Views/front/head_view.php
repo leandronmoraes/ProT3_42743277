@@ -5,14 +5,14 @@
   <meta charset="utf-8">
   <!-- Responsive -->
   <meta name="viewport" content="width=device-width, initial-scale=1">
-  <title>CódigoRoto - Blog Programación</title>
+  <title> <?php echo($titulo);?> </title>
   <!-- Icono de la página -->
   <link rel="icon" type="image/png" href="<?= base_url('assets/img/favicon.png') ?>">
   <!-- Bootstrap Referencia -->
-  <link href="assets/css/bootstrap.min.css" rel="stylesheet">
+  <link href="<?php echo base_url('assets/css/bootstrap.min.css');?>" rel="stylesheet">
 
   <!-- CSS Referencia - Estilos propios -->
-  <link href="assets/css/miestilo.css" rel="stylesheet">
+  <link href="<?php echo base_url('assets/css/miestilo.css');?>" rel="stylesheet">
   <!-- Fuentes Referencia -->
   <link href="https://fonts.googleapis.com/css2?family=Fira+Code&family=Inter:wght@400;700&display=swap" rel="stylesheet">
   <!-- Bootstrap JS Bundle-->

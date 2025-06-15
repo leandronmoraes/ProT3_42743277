@@ -2,6 +2,13 @@
   <div class="card shadow-lg rounded overflow-hidden" style="max-width: 800px; width: 100%;">
     <div class="row g-0">
 
+      <!-- Mensaje -->
+      <?php if (session()->getFlashdata('msg')): ?>
+        <div class="alert alert-warning">
+          <?= session()->getFlashdata('msg') ?>
+        </div>
+      <?php endif; ?>
+
       <!-- Columna de la imagen -->
       <div class="col-md-5 d-none d-md-block">
         <img src="<?= base_url('assets/img/logoprincipal.png') ?>" alt="Login CódigoRoto" class="img-fluid h-100" style="object-fit: cover;">
@@ -12,7 +19,8 @@
         <h3 class="text-center mb-3">Iniciar Sesión</h3>
         <p class="text-center text-muted">Bienvenido de nuevo a <span class="codigo">Código</span><span class="roto">Roto</span></p>
 
-        <form action="<?= base_url('login/validar') ?>" method="post" class="needs-validation" novalidate>
+        <!-- Inicio del formulario -->
+        <form method="post" action="<?php echo base_url('/enviarlogin') ?>">
 
           <!-- Email -->
           <div class="mb-3">
@@ -78,68 +86,58 @@
     'use strict';
 
     const form = document.querySelector('.needs-validation');
-    const passwordInput = document.querySelector('#password');
-    const toggleBtn = passwordInput.parentElement.querySelector('.toggle-password');
+    const passwordInput = document.querySelector('#pass'); // campo "pass"
+    const confirmarInput = document.querySelector('#confirmar'); // campo "confirmar"
+    const toggleBtns = document.querySelectorAll('.toggle-password');
 
-    // Mostrar/ocultar botón de ojo
-    const toggleVisibility = () => {
-      if (passwordInput.value.trim()) {
-        toggleBtn.classList.remove('d-none');
-      } else {
-        toggleBtn.classList.add('d-none');
-      }
+    // Mostrar/ocultar icono del ojo en base al contenido
+    const toggleVisibility = (input, toggleBtn) => {
+      toggleBtn.classList.toggle('d-none', !input.value.trim());
     };
 
-    passwordInput.addEventListener('input', toggleVisibility);
-    passwordInput.addEventListener('focus', toggleVisibility);
-    passwordInput.addEventListener('blur', toggleVisibility);
-
-    // Alternar visibilidad contraseña
-    toggleBtn.addEventListener('click', () => {
-      const icon = toggleBtn.querySelector('i');
-      const isPassword = passwordInput.type === 'password';
-      passwordInput.type = isPassword ? 'text' : 'password';
-      icon.classList.toggle('bi-eye', !isPassword);
-      icon.classList.toggle('bi-eye-slash', isPassword);
+    // Inicializar cada campo de contraseña con botón de ojo
+    document.querySelectorAll('.password-input').forEach(input => {
+      const toggleBtn = input.parentElement.querySelector('.toggle-password');
+      input.addEventListener('input', () => toggleVisibility(input, toggleBtn));
+      input.addEventListener('focus', () => toggleVisibility(input, toggleBtn));
+      input.addEventListener('blur', () => toggleVisibility(input, toggleBtn));
     });
 
-    // Validación y reinicio
-    form.addEventListener('submit', (event) => {
-      event.preventDefault();
+    // Alternar visibilidad de contraseñas
+    toggleBtns.forEach(toggleBtn => {
+      toggleBtn.addEventListener('click', () => {
+        const input = toggleBtn.parentElement.querySelector('.password-input');
+        const icon = toggleBtn.querySelector('i');
+        const isPassword = input.type === 'password';
+        input.type = isPassword ? 'text' : 'password';
+        icon.classList.toggle('bi-eye', !isPassword);
+        icon.classList.toggle('bi-eye-slash', isPassword);
+      });
+    });
 
-      if (!form.checkValidity()) {
-        form.classList.add('was-validated');
-        return;
+    // Validación y envío real
+    form.addEventListener('submit', (event) => {
+      if (passwordInput.value !== confirmarInput.value) {
+        confirmarInput.setCustomValidity('Las contraseñas no coinciden');
+        document.getElementById('confirmar-feedback').textContent = 'Las contraseñas no coinciden.';
+      } else {
+        confirmarInput.setCustomValidity('');
+        document.getElementById('confirmar-feedback').textContent = 'Por favor, confirma tu contraseña.';
       }
 
-      // Si es válido:
-      alert('Inicio de sesión correcto');
-
-      // Limpiar y reiniciar
-      form.reset();
-      form.classList.remove('was-validated');
-
-      // Forzar ocultar ícono y errores
-      toggleBtn.classList.add('d-none');
-      passwordInput.type = 'password';
-      const icon = toggleBtn.querySelector('i');
-      icon.classList.remove('bi-eye-slash');
-      icon.classList.add('bi-eye');
+      if (!form.checkValidity()) {
+        event.preventDefault(); // Solo bloquea si hay errores
+        form.classList.add('was-validated');
+      }
+      // No hacemos preventDefault si el formulario está válido, así se envía al backend
     });
 
-    // Botón reset manual
+    // Resetear el formulario
     form.addEventListener('reset', () => {
       form.classList.remove('was-validated');
-      toggleBtn.classList.add('d-none');
-      const icon = toggleBtn.querySelector('i');
-      icon.classList.remove('bi-eye-slash');
-      icon.classList.add('bi-eye');
+      confirmarInput.setCustomValidity('');
+      document.getElementById('confirmar-feedback').textContent = 'Por favor, confirma tu contraseña.';
+      toggleBtns.forEach(btn => btn.classList.add('d-none'));
     });
   })();
-</script>
-<script>
-  document.querySelector('#forgot-password-link').addEventListener('click', function(e) {
-    e.preventDefault();
-    alert('Te enviamos un mensaje a tu correo para restablecer tu contraseña.');
-  });
 </script>

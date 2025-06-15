@@ -12,14 +12,53 @@
         <h3 class="text-center mb-3">Crear cuenta</h3>
         <p class="text-center text-muted">Unite a <span class="codigo">Código</span><span class="roto">Roto</span> y comenzá a compartir tu pasión por la programación.</p>
 
-        <form action="<?= base_url('registro/procesar') ?>" method="post" class="needs-validation" novalidate>
+
+        <?php $validation = \Config\Services::validation(); ?>
+        <form method="post" action="<?= base_url('/registro') ?>" class="needs-validation" novalidate>
+          <?= csrf_field(); ?>
+          <?php if (!empty(session()->getFlashdata('fail'))): ?>
+            <div class="alert alert-danger"> <?= session()->getFlashdata('fail'); ?></div>
+          <?php endif; ?>
+          <?php if (!empty(session()->getFlashdata('success'))): ?>
+            <div class="alert alert-success"> <?= session()->getFlashdata('success'); ?></div>
+          <?php endif; ?>
+
           <!-- Nombre -->
           <div class="mb-3">
-            <label for="nombre" class="form-label">Nombre completo</label>
+            <label for="nombre" class="form-label">Nombre</label>
             <div class="input-group">
               <span class="input-group-text"><i class="bi bi-person-fill"></i></span>
-              <input type="text" class="form-control" id="nombre" name="nombre" placeholder="Ej: Juan Pérez" required>
-              <div class="invalid-feedback">Por favor, ingresa tu nombre completo.</div>
+              <input type="text" class="form-control" id="nombre" name="nombre" placeholder="Ej: Juan " required>
+              <div class="invalid-feedback">Por favor, ingresa tu nombre.</div>
+              <?php if (isset($validation) && $validation->hasError('nombre')): ?>
+                <div class="text-danger"><?= $validation->getError('nombre'); ?></div>
+              <?php endif; ?>
+            </div>
+          </div>
+
+          <!-- Apellido -->
+          <div class="mb-3">
+            <label for="apellido" class="form-label">Apellido</label>
+            <div class="input-group">
+              <span class="input-group-text"><i class="bi bi-person-lines-fill"></i></span>
+              <input type="text" class="form-control" id="apellido" name="apellido" placeholder="Ej: Gómez" required>
+              <div class="invalid-feedback">Por favor, ingresa tu apellido.</div>
+              <?php if (isset($validation) && $validation->hasError('apellido')): ?>
+                <div class="text-danger"><?= $validation->getError('apellido'); ?></div>
+              <?php endif; ?>
+            </div>
+          </div>
+
+          <!-- Nombre de usuario -->
+          <div class="mb-3">
+            <label for="usuario" class="form-label">Nombre de usuario</label>
+            <div class="input-group">
+              <span class="input-group-text"><i class="bi bi-person-badge-fill"></i></span>
+              <input type="text" class="form-control" id="usuario" name="usuario" placeholder="Ej: juan123" required>
+              <div class="invalid-feedback">Por favor, elegí un nombre de usuario.</div>
+              <?php if (isset($validation) && $validation->hasError('usuario')): ?>
+                <div class="text-danger"><?= $validation->getError('usuario'); ?></div>
+              <?php endif; ?>
             </div>
           </div>
 
@@ -30,6 +69,10 @@
               <span class="input-group-text"><i class="bi bi-envelope-fill"></i></span>
               <input type="email" class="form-control" id="email" name="email" placeholder="ejemplo@correo.com" required>
               <div class="invalid-feedback">Por favor, ingresa un email válido.</div>
+              <?php if (isset($validation) && $validation->hasError('email')): ?>
+                <div class="text-danger"><?= $validation->getError('email'); ?></div>
+              <?php endif; ?>
+
             </div>
           </div>
 
@@ -38,11 +81,14 @@
             <label for="password" class="form-label">Contraseña</label>
             <div class="input-group">
               <span class="input-group-text"><i class="bi bi-lock-fill"></i></span>
-              <input type="password" class="form-control password-input" id="password" name="password" placeholder="********" required minlength="6">
+              <input type="password" class="form-control password-input" id="pass" name="pass" placeholder="********" required minlength="6">
               <button type="button" class="btn btn-outline-secondary toggle-password d-none" tabindex="-1">
                 <i class="bi bi-eye"></i>
               </button>
               <div class="invalid-feedback">Por favor, ingresa una contraseña de al menos 6 caracteres.</div>
+              <?php if (isset($validation) && $validation->hasError('pass')): ?>
+                <div class="text-danger"><?= $validation->getError('pass'); ?></div>
+              <?php endif; ?>
             </div>
           </div>
 
@@ -56,6 +102,9 @@
                 <i class="bi bi-eye"></i>
               </button>
               <div class="invalid-feedback" id="confirmar-feedback">Por favor, confirma tu contraseña.</div>
+              <?php if (isset($validation) && $validation->hasError('confirmar')): ?>
+                <div class="text-danger"><?= $validation->getError('confirmar'); ?></div>
+              <?php endif; ?>
             </div>
           </div>
 
@@ -88,7 +137,7 @@
   (() => {
     'use strict';
     const form = document.querySelector('.needs-validation');
-    const password = form.querySelector('#password');
+    const password = form.querySelector('#pass');
     const confirmar = form.querySelector('#confirmar');
     const confirmarFeedback = form.querySelector('#confirmar-feedback');
 
@@ -127,8 +176,6 @@
 
     // Validación al enviar el formulario
     form.addEventListener('submit', event => {
-      event.preventDefault();
-
       if (password.value !== confirmar.value) {
         confirmar.setCustomValidity('Las contraseñas no coinciden');
         confirmarFeedback.textContent = 'Las contraseñas no coinciden.';
@@ -138,22 +185,11 @@
       }
 
       if (!form.checkValidity()) {
+        event.preventDefault(); // Previene el envío si el form es inválido
         event.stopPropagation();
         form.classList.add('was-validated');
-      } else {
-        alert('Registro exitoso');
-
-        // Limpiar
-        form.reset();
-        form.classList.remove('was-validated');
-        confirmar.setCustomValidity('');
-        confirmarFeedback.textContent = 'Por favor, confirma tu contraseña.';
-
-        // Ocultar iconos del ojo
-        document.querySelectorAll('.toggle-password').forEach(icon => {
-          icon.classList.add('d-none');
-        });
       }
+      // Si el formulario es válido, se envía normalmente al backend
     });
 
     // Reset limpia validaciones y oculta ojos

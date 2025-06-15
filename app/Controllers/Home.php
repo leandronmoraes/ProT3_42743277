@@ -6,7 +6,8 @@ class Home extends BaseController
 {
     public function index(): void
     {
-    echo view('front/head_view');
+    $data['titulo']='Página principal';
+    echo view('front/head_view',$data);
     echo view('front/navbar_view');
     echo view('front/darkmode_button_view');
     echo view('front/principal'); 
@@ -15,7 +16,8 @@ class Home extends BaseController
 
     public function quienes_somos(): void
     {
-    echo view('front/head_view');
+    $data['titulo']='Quiénes somos';
+    echo view('front/head_view',$data);
 
     echo view('front/navbar_view');
     echo view('front/darkmode_button_view');
@@ -25,7 +27,8 @@ class Home extends BaseController
 
     public function acerca_de(): void
     {
-        echo view('front/head_view');   
+        $data['titulo']='Acerca de';
+        echo view('front/head_view',$data);   
         echo view('front/navbar_view');
         echo view('front/darkmode_button_view');
         echo view('front/acerca_de');       
@@ -33,27 +36,30 @@ class Home extends BaseController
     }
     public function registro(): void
     {
-        echo view('front/head_view');  
+        $data['titulo']='Registro';
+        echo view('front/head_view',$data);  
         echo view('front/navbar_view');
         echo view('front/darkmode_button_view');
-        echo view('front/registro');     
+        echo view('back/usuario/registro');     
         echo view('front/footer_view');
     }
     public function login(): void
     {
-        echo view('front/head_view');     
+        $data['titulo']='Login';
+        echo view('front/head_view',$data);     
         echo view('front/navbar_view');
         echo view('front/darkmode_button_view');
-        echo view('front/login');
+        echo view('back/usuario/login');
         echo view('front/footer_view');
     }
 
     public function contacto(): void
     {
-        echo view('front/head_view');     
+        $data['titulo']='Contacto';
+        echo view('front/head_view',$data);     
         echo view('front/navbar_view');
         echo view('front/darkmode_button_view');
-        echo view('front/contacto');
+        echo view('front/contacto'); //Ver si también contacto va en el back
         echo view('front/footer_view');
     }
 }
