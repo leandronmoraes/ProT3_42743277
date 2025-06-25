@@ -1,4 +1,4 @@
-<div class="container d-flex justify-content-center align-items-center" style="min-height: 100vh;">
+<div class="container d-flex justify-content-center align-items-center" style="min-height: calc(100vh - 70px); padding-top: 70px;">
   <div class="card shadow-lg rounded overflow-hidden" style="max-width: 800px; width: 100%;">
     <div class="row g-0">
 
@@ -12,9 +12,8 @@
         <h3 class="text-center mb-3">Crear cuenta</h3>
         <p class="text-center text-muted">Unite a <span class="codigo">Código</span><span class="roto">Roto</span> y comenzá a compartir tu pasión por la programación.</p>
 
-
         <?php $validation = \Config\Services::validation(); ?>
-        <form method="post" action="<?= base_url('/registro') ?>" class="needs-validation" novalidate>
+        <form method="post" action="<?= base_url('/enviar-form') ?>" class="needs-validation" novalidate>
           <?= csrf_field(); ?>
           <?php if (!empty(session()->getFlashdata('fail'))): ?>
             <div class="alert alert-danger"> <?= session()->getFlashdata('fail'); ?></div>

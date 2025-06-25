@@ -34,7 +34,7 @@ class login_controller extends Controller
             $ba = $data['baja'];
             if ($ba == 'SI') {
                 $session->setFlashdata('msg', 'Usuario dado de baja');
-                return redirect()->to('/login_controller');
+                return redirect()->to('/login');
             }
             //Verificamos los datos ingresados para iniciar, si se cumle la verificación
             //Iniciamos sesión
@@ -58,11 +58,11 @@ class login_controller extends Controller
             } else {
                 //Si no cumple la verificación
                 $session->setFlashdata('msg', 'Contraseña incorrecta');
-                return redirect()->to('/login_controller');
+                return redirect()->to('/login');
             }
         } else {
             $session->setFlashdata('msg', 'No existe el email o es incorrecto');
-            return redirect()->to('/login_controller');
+            return redirect()->to('/login');
         }
     }
     /*Cerramos la sesión */

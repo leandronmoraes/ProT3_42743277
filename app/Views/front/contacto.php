@@ -1,20 +1,27 @@
 <div class="container mt-5 formularioContacto">
   <h2>Contacto</h2>
-  <form class="needs-validation" novalidate>
+
+  <?php if (session()->getFlashdata('msg')): ?>
+    <div class="alert alert-success">
+      <?= session()->getFlashdata('msg') ?>
+    </div>
+  <?php endif; ?>
+
+  <form class="needs-validation" method="post" action="<?= base_url('contacto/enviar') ?>" novalidate>
     <div class="mb-3">
-      <input type="text" class="form-control" id="nombre" placeholder="Tu nombre" required>
+      <input type="text" class="form-control" id="nombre" name="nombre" placeholder="Tu nombre" required>
       <div class="invalid-feedback">
         Por favor, ingresa tu nombre.
       </div>
     </div>
     <div class="mb-3">
-      <input type="email" class="form-control" id="email" placeholder="Tu email" required>
+      <input type="email" class="form-control" id="email" name="email" placeholder="Tu email" required>
       <div class="invalid-feedback">
         Por favor, ingresa un email válido.
       </div>
     </div>
     <div class="mb-3">
-      <textarea class="form-control" id="mensaje" rows="4" placeholder="Tu mensaje" required></textarea>
+      <textarea class="form-control" id="mensaje" name="mensaje" rows="4" placeholder="Tu mensaje" required></textarea>
       <div class="invalid-feedback">
         Por favor, ingresa un mensaje.
       </div>
@@ -26,25 +33,21 @@
 </div>
 
 <script>
-(() => {
-  'use strict'
-  const form = document.querySelector('.needs-validation')
+  (() => {
+    'use strict'
+    const form = document.querySelector('.needs-validation')
 
-  form.addEventListener('submit', event => {
-    event.preventDefault()
+    form.addEventListener('submit', event => {
+      if (!form.checkValidity()) {
+        event.preventDefault()
+        event.stopPropagation()
+        form.classList.add('was-validated')
+      }
+      
+    })
 
-    if (!form.checkValidity()) {
-      event.stopPropagation()
-      form.classList.add('was-validated')
-    } else {
-      alert('Mensaje enviado correctamente')
-      form.reset()
+    form.addEventListener('reset', () => {
       form.classList.remove('was-validated')
-    }
-  })
-
-  form.addEventListener('reset', () => {
-    form.classList.remove('was-validated')
-  })
-})()
+    })
+  })()
 </script>

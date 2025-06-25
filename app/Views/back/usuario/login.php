@@ -1,13 +1,22 @@
 <div class="container d-flex justify-content-center align-items-center" style="min-height: 100vh;">
   <div class="card shadow-lg rounded overflow-hidden" style="max-width: 800px; width: 100%;">
-    <div class="row g-0">
 
-      <!-- Mensaje -->
-      <?php if (session()->getFlashdata('msg')): ?>
-        <div class="alert alert-warning">
-          <?= session()->getFlashdata('msg') ?>
-        </div>
-      <?php endif; ?>
+    <!-- Mensajes flash -->
+    <?php if (session()->getFlashdata('success')): ?>
+      <div class="alert alert-success alert-dismissible fade show" role="alert" id="success-msg">
+        <?= session()->getFlashdata('success') ?>
+        <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Cerrar"></button>
+      </div>
+    <?php endif; ?>
+
+    <?php if (session()->getFlashdata('msg')): ?>
+      <div class="alert alert-warning alert-dismissible fade show" role="alert" id="warning-msg">
+        <?= session()->getFlashdata('msg') ?>
+        <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Cerrar"></button>
+      </div>
+    <?php endif; ?>
+
+    <div class="row g-0">
 
       <!-- Columna de la imagen -->
       <div class="col-md-5 d-none d-md-block">
@@ -19,8 +28,7 @@
         <h3 class="text-center mb-3">Iniciar Sesión</h3>
         <p class="text-center text-muted">Bienvenido de nuevo a <span class="codigo">Código</span><span class="roto">Roto</span></p>
 
-        <!-- Inicio del formulario -->
-        <form method="post" action="<?php echo base_url('/enviarlogin') ?>">
+        <form method="post" action="<?= base_url('/enviarlogin') ?>" class="needs-validation" novalidate>
 
           <!-- Email -->
           <div class="mb-3">
@@ -37,7 +45,7 @@
             <label for="password" class="form-label">Contraseña</label>
             <div class="input-group">
               <span class="input-group-text"><i class="bi bi-lock"></i></span>
-              <input type="password" class="form-control password-input" id="password" name="password" placeholder="********" required minlength="6">
+              <input type="password" class="form-control password-input" id="pass" name="pass" placeholder="********" required minlength="6">
               <button type="button" class="btn btn-outline-secondary toggle-password d-none" tabindex="-1">
                 <i class="bi bi-eye"></i>
               </button>
@@ -81,13 +89,13 @@
 </div>
 
 <!-- SCRIPTS -->
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
 <script>
   (() => {
     'use strict';
 
     const form = document.querySelector('.needs-validation');
     const passwordInput = document.querySelector('#pass'); // campo "pass"
-    const confirmarInput = document.querySelector('#confirmar'); // campo "confirmar"
     const toggleBtns = document.querySelectorAll('.toggle-password');
 
     // Mostrar/ocultar icono del ojo en base al contenido
@@ -108,36 +116,45 @@
       toggleBtn.addEventListener('click', () => {
         const input = toggleBtn.parentElement.querySelector('.password-input');
         const icon = toggleBtn.querySelector('i');
-        const isPassword = input.type === 'password';
-        input.type = isPassword ? 'text' : 'password';
-        icon.classList.toggle('bi-eye', !isPassword);
-        icon.classList.toggle('bi-eye-slash', isPassword);
+        if (input.type === 'password') {
+          input.type = 'text';
+          icon.classList.remove('bi-eye');
+          icon.classList.add('bi-eye-slash');
+        } else {
+          input.type = 'password';
+          icon.classList.remove('bi-eye-slash');
+          icon.classList.add('bi-eye');
+        }
       });
     });
 
     // Validación y envío real
     form.addEventListener('submit', (event) => {
-      if (passwordInput.value !== confirmarInput.value) {
-        confirmarInput.setCustomValidity('Las contraseñas no coinciden');
-        document.getElementById('confirmar-feedback').textContent = 'Las contraseñas no coinciden.';
-      } else {
-        confirmarInput.setCustomValidity('');
-        document.getElementById('confirmar-feedback').textContent = 'Por favor, confirma tu contraseña.';
-      }
-
+      // Validación de HTML5 nativa funciona automáticamente
       if (!form.checkValidity()) {
-        event.preventDefault(); // Solo bloquea si hay errores
+        event.preventDefault();
         form.classList.add('was-validated');
       }
-      // No hacemos preventDefault si el formulario está válido, así se envía al backend
     });
 
     // Resetear el formulario
     form.addEventListener('reset', () => {
       form.classList.remove('was-validated');
-      confirmarInput.setCustomValidity('');
-      document.getElementById('confirmar-feedback').textContent = 'Por favor, confirma tu contraseña.';
       toggleBtns.forEach(btn => btn.classList.add('d-none'));
     });
+
+    // Ocultar mensajes flash automáticamente después de 5 segundos
+    setTimeout(() => {
+      const successMsg = document.getElementById('success-msg');
+      const warningMsg = document.getElementById('warning-msg');
+
+      if (successMsg) {
+        bootstrap.Alert.getOrCreateInstance(successMsg).close();
+      }
+      if (warningMsg) {
+        bootstrap.Alert.getOrCreateInstance(warningMsg).close();
+      }
+    }, 5000);
+
   })();
 </script>
