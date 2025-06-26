@@ -12,10 +12,17 @@
                 </div>
             <?php endif; ?>
 
+
             <?php if ($modo == 'activos'): ?>
                 <a href="<?= base_url('usuarios/inactivos') ?>" class="btn btn-outline-secondary mb-3">
                     <i class="bi bi-eye-slash me-1"></i> Ver usuarios inactivos
                 </a>
+                <a href="<?= base_url('usuarios/create') ?>"
+                    class="btn btn-success mb-3"
+                    onclick="return confirm('¿Estás seguro que querés crear un nuevo usuario?')">
+                    <i class="bi bi-person-plus-fill me-1"></i> Crear nuevo usuario
+                </a>
+
             <?php else: ?>
                 <a href="<?= base_url('usuarios') ?>" class="btn btn-outline-primary mb-3">
                     <i class="bi bi-arrow-left me-1"></i> Ver usuarios activos

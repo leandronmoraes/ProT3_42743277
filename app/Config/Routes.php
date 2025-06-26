@@ -43,3 +43,7 @@ $routes->get('/soporte', 'Panel_controller::soporte');
 
 $routes->get('/reportes', 'Panel_controller::reportes');
 $routes->get('/configuracion', 'Panel_controller::configuracion');
+
+/*RUTA ADMIN CREAR USUARIO */
+$routes->get('usuarios/create', 'usuario_controller::createAdmin');
+$routes->post('usuarios/store', 'usuario_controller::storeAdmin');

@@ -182,4 +182,62 @@ class usuario_controller extends Controller
     echo view('front/footer_view');
 }
 
+/*Función para el admin - crear usuario */
+// Muestra el formulario para que el ADMIN cree un nuevo usuario
+public function createAdmin()
+{
+    $session = session();
+    if ($session->get('perfil_id') != 1) {
+        return redirect()->to('/')->with('fail', 'Acceso no autorizado');
+    }
+
+    $data['titulo'] = 'Crear nuevo usuario';
+    echo view('front/head_view', $data);
+    echo view('front/navbar_view');
+    echo view('back/usuario/crear_admin', $data); // vista que vas a crear abajo
+    echo view('front/footer_view');
+}
+
+// Procesa el formulario de creación (por admin)
+public function storeAdmin()
+{
+    $session = session();
+    if ($session->get('perfil_id') != 1) {
+        return redirect()->to('/')->with('fail', 'Acceso no autorizado');
+    }
+
+    $input = $this->validate([
+        'nombre'   => 'required|min_length[3]',
+        'apellido' => 'required|min_length[3]',
+        'usuario'  => 'required|min_length[3]|is_unique[usuarios.usuario]',
+        'email'    => 'required|valid_email|is_unique[usuarios.email]',
+        'pass'     => 'required|min_length[3]|max_length[10]',
+        'confirmar' => 'required|matches[pass]',
+        'perfil_id' => 'required|in_list[1,2]'
+    ]);
+
+    if (!$input) {
+        $data['titulo'] = 'Crear nuevo usuario';
+        $data['validation'] = $this->validator;
+        echo view('front/head_view', $data);
+        echo view('front/navbar_view');
+        echo view('back/usuario/crear_admin', $data);
+        echo view('front/footer_view');
+        return;
+    }
+
+    $model = new usuario_Model();
+    $model->save([
+        'nombre'   => $this->request->getVar('nombre'),
+        'apellido' => $this->request->getVar('apellido'),
+        'usuario'  => $this->request->getVar('usuario'),
+        'email'    => $this->request->getVar('email'),
+        'pass'     => password_hash($this->request->getVar('pass'), PASSWORD_DEFAULT),
+        'perfil_id' => $this->request->getVar('perfil_id'),
+        'baja' => 'NO'
+    ]);
+
+    return redirect()->to('/usuarios')->with('success', 'Usuario creado correctamente');
+}
+
 }
