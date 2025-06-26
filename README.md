@@ -17,18 +17,41 @@ El proyecto se organiza de la siguiente forma:
 ├── app/
 │   ├── Config/
 │   ├── Controllers/
+│       ├── consulta_controller.php
+│       ├── login_controller.php
+│       ├── Panel_controller.php
+│       ├── usuario_controller.php
 │   ├── Database/
 │   ├── Filters/
 │   ├── Helpers/
 │   ├── Language/
 │   ├── Libraries/
 │   ├── Models/
+│       ├── consulta_Model.php
+│       ├── usuario_Model.php
 │   ├── ThirdParty/
 │   └── Views/
+│       └── back/
+│       │    ├── admin/
+│       │    │   ├── configuración.php
+│       │    │   ├── panel.php
+│       │    │   ├── reportes.php
+│       │    └── usuario/
+│       │        ├── crear_admin.php
+│       │        ├── editar.php
+│       │        ├── inactivos.php
+│       │        ├── index.php
+│       │        ├── login.php
+│       │        ├── mi_perfil.php
+│       │        ├── mis_publicaciones.php
+│       │        ├── panel_cliente.php
+│       │        ├── registro.php
+│       │        ├── soporte.php
+│       │        ├── usuario_logueado.php
 │       └── front/
 │           ├── acerca_de.php
 │           ├── contacto.php
-│           ├── login.php
+│           ├── darkmode_button_view.php
 │           ├── principal.php
 │           ├── quienes_somos.php
 │           ├── head_view.php
@@ -57,6 +80,7 @@ Secciones informativas:
 -Quiénes somos
 -Interfaz responsive con Bootstrap
 -Organización modular mediante CodeIgniter
+-Se implementaron funcionalidades propias del CRUD de usuario
 
 🖼️ Capturas del sitio
 ![image](https://github.com/user-attachments/assets/f415082d-4cd1-464c-92be-c451711828c2)
