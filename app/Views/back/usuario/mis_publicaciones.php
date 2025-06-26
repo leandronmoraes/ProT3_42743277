@@ -13,9 +13,10 @@
                 </div>
             </div>
 
-            <a href="<?= base_url('/crear-publicacion') ?>" class="btn btn-outline-primary mt-3">
+            <a href="#" onclick="alert('Funcionalidad en desarrollo'); return false;" class="btn btn-outline-primary mt-3">
                 <i class="bi bi-plus-circle me-1"></i> Crear nueva publicación
             </a>
+
         </div>
     </div>
 </div>

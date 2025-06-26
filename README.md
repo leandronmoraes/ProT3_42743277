@@ -17,18 +17,18 @@ El proyecto se organiza de la siguiente forma:
 ├── app/
 │   ├── Config/
 │   ├── Controllers/
-│       ├── consulta_controller.php
-│       ├── login_controller.php
-│       ├── Panel_controller.php
-│       ├── usuario_controller.php
+│   │    ├── consulta_controller.php
+│   │    ├── login_controller.php
+│   │    ├── Panel_controller.php
+│   │    ├── usuario_controller.php
 │   ├── Database/
 │   ├── Filters/
 │   ├── Helpers/
 │   ├── Language/
 │   ├── Libraries/
 │   ├── Models/
-│       ├── consulta_Model.php
-│       ├── usuario_Model.php
+│   │    ├── consulta_Model.php
+│   │    ├── usuario_Model.php
 │   ├── ThirdParty/
 │   └── Views/
 │       └── back/
@@ -68,6 +68,13 @@ El proyecto se organiza de la siguiente forma:
 ├── writable/
 └── index.php (otros archivos raíz)
 ```
+## 🔐 Credenciales
+-ADMIN
+admin@correo.com
+admin1
+-CLIENTE
+cliente@correo.com
+cliente1
 ---
 ## ⚙️ Funcionalidades principales
 

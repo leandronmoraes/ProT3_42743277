@@ -2,10 +2,11 @@
   <h2>Contacto</h2>
 
   <?php if (session()->getFlashdata('msg')): ?>
-    <div class="alert alert-success">
+    <div class="alert alert-info">
       <?= session()->getFlashdata('msg') ?>
     </div>
   <?php endif; ?>
+
 
   <form class="needs-validation" method="post" action="<?= base_url('contacto/enviar') ?>" novalidate>
     <div class="mb-3">
@@ -43,7 +44,7 @@
         event.stopPropagation()
         form.classList.add('was-validated')
       }
-      
+
     })
 
     form.addEventListener('reset', () => {

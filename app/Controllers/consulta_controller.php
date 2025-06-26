@@ -13,27 +13,33 @@ class consulta_controller extends Controller
 
         if ($this->request->getMethod() === 'post') {
 
-            // Validación primero
-            if (! $this->validate([
+            // Validaciones
+            $rules = [
                 'nombre' => 'required|min_length[3]',
                 'email' => 'required|valid_email',
-                'mensaje' => 'required|min_length[5]'
-            ])) {
-                return redirect()->back()->withInput()->with('msg', 'Error: Verificá los datos ingresados.');
+                'mensaje' => 'required|min_length[5]',
+            ];
+
+            if (! $this->validate($rules)) {
+                return redirect()->to('/contacto')->withInput()->with('msg', '❌ Verificá los datos ingresados.');
             }
 
-            // Guardar después de validar
+            // Datos a guardar (sin fecha_envio)
             $data = [
                 'nombre'  => $this->request->getPost('nombre'),
                 'email'   => $this->request->getPost('email'),
                 'mensaje' => $this->request->getPost('mensaje'),
-                'fecha_envio' => date('Y-m-d H:i:s')
             ];
 
             $model = new consulta_Model();
-            $model->save($data);
 
-            return redirect()->to('/contacto')->with('msg', '¡Mensaje enviado con éxito!');
+            if (! $model->save($data)) {
+                return redirect()->to('/contacto')->withInput()->with('msg', '❌ Error al guardar en la base de datos.');
+            }
+
+            return redirect()->to('/contacto')->with('msg', '✅ ¡Mensaje enviado con éxito!');
         }
+
+        return redirect()->to('/contacto');
     }
 }
