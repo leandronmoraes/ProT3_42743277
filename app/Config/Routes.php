@@ -25,9 +25,10 @@ $routes->post('/enviarlogin', 'Login_controller::auth');
 $routes->get('/panel', 'Panel_controller::index', ['filter' => 'auth']);
 $routes->get('/logout', 'Login_controller::logout');
 
-/*Rutas del Contacto */
-$routes->post('/contacto/enviar', 'consulta_controller::enviar');
-$routes->get('/contacto', 'Home::contacto'); // vista
+// /*Rutas del Contacto */
+// $routes->get('/contacto', 'Home::contacto');  // Página formulario
+// $routes->post('/contacto/enviar', 'consulta_controller::enviar'); // Acción enviar
+
 
 /*Rutas CRUD usuario*/
 $routes->get('/usuarios', 'usuario_controller::index', ['filter' => 'auth']);
@@ -49,5 +50,6 @@ $routes->get('/configuracion', 'Panel_controller::configuracion', ['filter' => '
 $routes->get('usuarios/create', 'usuario_controller::createAdmin', ['filter' => 'auth']);
 $routes->post('usuarios/store', 'usuario_controller::storeAdmin', ['filter' => 'auth']);
 
-/*RUTA CONSULTA */
-$routes->post('/contacto/enviar', 'consulta_controller::enviar');
+
+$routes->get('/contacto', 'Home::contacto');                // Mostrar formulario
+$routes->post('/contacto/enviar', 'Consulta_controller::enviar');  // Procesar formulario

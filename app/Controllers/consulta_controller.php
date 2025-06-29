@@ -2,44 +2,43 @@
 
 namespace App\Controllers;
 
-use App\Models\consulta_Model;
-use CodeIgniter\Controller;
+use App\Models\ConsultaModel;
 
-class consulta_controller extends Controller
+class Consulta_controller extends BaseController
 {
     public function enviar()
     {
-        helper(['form']);
+        $model = new ConsultaModel();
+        $validation = \Config\Services::validation();
 
-        if ($this->request->getMethod() === 'post') {
+        $validation->setRules([
+            'nombre'  => 'required|max_length[100]',
+            'email'   => 'required|valid_email|max_length[150]',
+            'mensaje' => 'required',
+        ]);
 
-            // Validaciones
-            $rules = [
-                'nombre' => 'required|min_length[3]',
-                'email' => 'required|valid_email',
-                'mensaje' => 'required|min_length[5]',
-            ];
-
-            if (! $this->validate($rules)) {
-                return redirect()->to('/contacto')->withInput()->with('msg', '❌ Verificá los datos ingresados.');
-            }
-
-            // Datos a guardar (sin fecha_envio)
-            $data = [
-                'nombre'  => $this->request->getPost('nombre'),
-                'email'   => $this->request->getPost('email'),
-                'mensaje' => $this->request->getPost('mensaje'),
-            ];
-
-            $model = new consulta_Model();
-
-            if (! $model->save($data)) {
-                return redirect()->to('/contacto')->withInput()->with('msg', '❌ Error al guardar en la base de datos.');
-            }
-
-            return redirect()->to('/contacto')->with('msg', '✅ ¡Mensaje enviado con éxito!');
+        if (!$this->validate($validation->getRules())) {
+            return redirect()
+                ->to('/contacto')
+                ->withInput()
+                ->with('msg', 'Por favor completa correctamente el formulario.')
+                ->with('errors', $validation->getErrors());
         }
 
-        return redirect()->to('/contacto');
+        $data = [
+            'nombre'      => $this->request->getPost('nombre'),
+            'email'       => $this->request->getPost('email'),
+            'mensaje'     => $this->request->getPost('mensaje'),
+            'fecha_envio' => date('Y-m-d H:i:s'),
+        ];
+
+        if ($model->insert($data)) {
+            return redirect()->to('/contacto')->with('msg', 'Mensaje enviado correctamente. Gracias por contactarnos.');
+        } else {
+            return redirect()
+                ->to('/contacto')
+                ->withInput()
+                ->with('msg', 'Hubo un problema al enviar el mensaje. Intenta nuevamente.');
+        }
     }
 }
