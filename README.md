@@ -78,7 +78,7 @@ Contraseña: admin1
 CLIENTE
 Email: cliente@correo.com
 Contraseña: cliente1
-
+```
 ---
 ## ⚙️ Funcionalidades principales
 
