@@ -69,12 +69,16 @@ El proyecto se organiza de la siguiente forma:
 └── index.php (otros archivos raíz)
 ```
 ## 🔐 Credenciales
--ADMIN
-admin@correo.com
-admin1
--CLIENTE
-cliente@correo.com
-cliente1
+
+```txt
+ADMIN
+Email: admin@correo.com
+Contraseña: admin1
+
+CLIENTE
+Email: cliente@correo.com
+Contraseña: cliente1
+
 ---
 ## ⚙️ Funcionalidades principales
 
@@ -89,16 +93,21 @@ Secciones informativas:
 -Organización modular mediante CodeIgniter
 -Se implementaron funcionalidades propias del CRUD de usuario
 
-🖼️ Capturas del sitio
-![image](https://github.com/user-attachments/assets/f415082d-4cd1-464c-92be-c451711828c2)
+## 🖼️ Capturas del sitio
+![Principal](https://github.com/user-attachments/assets/f415082d-4cd1-464c-92be-c451711828c2)
 
-![image](https://github.com/user-attachments/assets/34bdb8a5-fe88-4af7-9b04-5019eda56912)
+![Login](https://github.com/user-attachments/assets/34bdb8a5-fe88-4af7-9b04-5019eda56912)
 
+![Panel Admin](https://github.com/user-attachments/assets/c3eb18f6-370e-4e34-9dc8-4a2828766462)
 
-👤 Autor
--Moraes Leandro
--Estudiante de la Licenciatura en Sistemas de Información
--GitHub: @leandronmoraes
+![CRUD Usuarios](https://github.com/user-attachments/assets/4f976f99-33d8-4ed1-b7bd-1f9797fdfc3b)
+
+## 👤 **Autor**
+
+- **Nombre:** Moraes Leandro  
+- **Carrera:** Estudiante de la Licenciatura en Sistemas de Información  
+- **GitHub:** [@leandronmoraes](https://github.com/leandronmoraes)
+
 
 📄 Licencia
 Este proyecto fue realizado con fines educativos. No posee una licencia de distribución comercial.
